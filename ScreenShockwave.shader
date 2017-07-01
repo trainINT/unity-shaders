@@ -21,8 +21,10 @@ Shader "Custom/ScreenShockwave"
     {
         Pass
         {
-            Cull Off ZWrite Off
-            CGPROGRAM
+            Cull Off 
+			ZWrite Off
+            
+			CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
 
@@ -42,8 +44,6 @@ Shader "Custom/ScreenShockwave"
                 float4 vertex : SV_POSITION;
             };
 
-            half _InnerRadius;
-            half _OuterRadius;
             float _CentreX;
             float _CentreY;
 
@@ -57,11 +57,11 @@ Shader "Custom/ScreenShockwave"
             }
 
             sampler2D _MainTex;
+            half _InnerRadius;
+            half _OuterRadius;
             float _CurrentDuration;
             half _DistortionStrengthBase;
             half _DistortionStrengthPower;
-
-            sampler2D _OffsetTex;
 
             fixed4 frag (v2f i) : COLOR
             {
