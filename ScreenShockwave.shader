@@ -65,7 +65,7 @@ Shader "Custom/ScreenShockwave"
 
             fixed4 frag (v2f i) : COLOR
             {
-	        float dist = distance(i.uv_centre * unity_OrthoParams, i.uv * unity_OrthoParams);
+				float dist = distance(i.uv_centre * unity_OrthoParams, i.uv * unity_OrthoParams);
 
             	//distortion
             	float diff = dist - _CurrentDuration;
@@ -73,9 +73,9 @@ Shader "Custom/ScreenShockwave"
             	float diffTime = diff * powDiff;
             	float diffUV = normalize(i.uv - i.uv_centre);
 
-            	float offset = diffUV * diffTime * (1-step(_OuterRadius, dist)) * step(_InnerRadius, dist);
-
             	//step functions return 1 if dist is between inner and outer radius
+            	float offset = diffUV * diffTime * (1-step(_OuterRadius, dist)) * step(_InnerRadius, dist);
+				
             	return tex2D(_MainTex, i.uv + offset);
             }
             ENDCG
