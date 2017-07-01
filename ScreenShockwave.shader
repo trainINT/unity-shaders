@@ -22,9 +22,9 @@ Shader "Custom/ScreenShockwave"
         Pass
         {
             Cull Off 
-			ZWrite Off
+ 	    ZWrite Off
             
-			CGPROGRAM
+	    CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
 
@@ -65,18 +65,20 @@ Shader "Custom/ScreenShockwave"
 
             fixed4 frag (v2f i) : COLOR
             {
-				float dist = distance(i.uv_centre * unity_OrthoParams, i.uv * unity_OrthoParams);
+	    	//gets the distance from the centre and fragment of the camera texture
+		float dist = distance(i.uv_centre * unity_OrthoParams, i.uv * unity_OrthoParams);
 
             	//distortion
             	float diff = dist - _CurrentDuration;
             	float powDiff = 1 - pow(abs(diff * _DistortionStrengthBase), _DistortionStrengthPower);
             	float diffTime = diff * powDiff;
             	float diffUV = normalize(i.uv - i.uv_centre);
-
-            	//step functions return 1 if dist is between inner and outer radius
-            	float offset = diffUV * diffTime * (1-step(_OuterRadius, dist)) * step(_InnerRadius, dist);
-				
-            	return tex2D(_MainTex, i.uv + offset);
+		
+		//final offset
+            	float offset = diffUV * diffTime;
+	
+		//offset is only applied if the fragment is between inner and outer radii
+            	return tex2D(_MainTex, i.uv + offset * (1-step(_OuterRadius, dist)) * step(_InnerRadius, dist));
             }
             ENDCG
         }
